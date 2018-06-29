@@ -1,5 +1,11 @@
 package de.polygondev.launcher.utils.network;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -9,12 +15,34 @@ import java.util.List;
  */
 public class MysqlInterface implements Database {
 
+    // TODO: Change ip
+    private static final String HOST = "127.0.0.1";
+
+    private static final int PORT = 3306;
+
+    private static final String USER = "polygondev_launcher";
+
+    private static final String PASSWORD = "FUQ8Fn27bcFVCNpr";
+
+    private static final String DATABASE = "polygondev_data";
+
+    private static final String TABLE = "Projects";
+
+    private Connection connection;
+
     /**
      * Connect to the database.
      */
     @Override
     public void connect() {
-        // TODO: Implement me!
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?user="
+                            + USER + "&password=" + PASSWORD + "&autoReconnect=true");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -22,7 +50,7 @@ public class MysqlInterface implements Database {
      */
     @Override
     public void setUp() {
-        // TODO: Implement me!
+        // Nothing to do here..
     }
 
     /**
@@ -32,7 +60,28 @@ public class MysqlInterface implements Database {
      */
     @Override
     public List<ProjectData> resolveProjects() {
-        // TODO: Implement me!
-        return null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `" + TABLE + "`");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            List<ProjectData> projects = new LinkedList<>();
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String iconUrl = resultSet.getString("IconUrl");
+                String downloadPath = resultSet.getString("DownloadPath");
+                String description = resultSet.getString("Description");
+
+                ProjectData data = new ProjectData(name, description, downloadPath, iconUrl);
+                projects.add(data);
+            }
+
+            return projects;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return new LinkedList<>();
+        }
     }
 }
