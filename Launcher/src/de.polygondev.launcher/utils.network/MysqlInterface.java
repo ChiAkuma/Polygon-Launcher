@@ -15,8 +15,9 @@ import java.util.List;
  */
 public class MysqlInterface implements Database {
 
-    // TODO: Change ip
-    private static final String HOST = "127.0.0.1";
+    // TODO: Change ip and give access to query
+
+    private static final String HOST = "polygondev.bplaced.net";
 
     private static final int PORT = 3306;
 

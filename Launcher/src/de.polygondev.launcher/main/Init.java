@@ -1,9 +1,11 @@
 package de.polygondev.launcher.main;
 
+import de.polygondev.launcher.gui.GUI_Main;
 import de.polygondev.launcher.utils.network.Database;
 import de.polygondev.launcher.utils.network.MysqlInterface;
 import de.polygondev.launcher.utils.network.ProjectData;
 import java.util.List;
+import javafx.application.Application;
 
 public class Init {
 
@@ -12,10 +14,11 @@ public class Init {
 
         database.connect();
         database.setUp();
-
         List<ProjectData> projects = database.resolveProjects();
 
         // TODO: Show-up gui and add projects list to view
+
+        Application.launch(GUI_Main.class, args);
     }
     
 }
