@@ -23,7 +23,6 @@ public class GUI_Main extends Application {
   private Button button1 = new Button();
   private Button button2 = new Button();
   private Button button3 = new Button();
-
   
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
@@ -34,7 +33,7 @@ public class GUI_Main extends Application {
     imageView1.setFitWidth(100);
     Image img = null;
     try{
-    img = new Image("favicon.png");
+    img = new Image("resources/icon.png");
       } catch(Exception e){
         
       }
